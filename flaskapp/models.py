@@ -5,7 +5,7 @@ class User(db.Model):
     __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
-    password = db.Column(db.String, nullable=False) # Make sure to hash before storing first time
+    password = db.Column(db.String, nullable=False) # Do not directly set and store passwords. Use set_password() and check_password()
     email = db.Column(db.String, unique=True, nullable=False)
     email_is_verified = db.Column(db.Boolean, nullable=False, default=False)
     account_created_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.now())
