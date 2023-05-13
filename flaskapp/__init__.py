@@ -10,9 +10,9 @@ api = Api()
 bcrypt = Bcrypt()
 jwt = JWT()
 
-def create_app():
+def create_app(config_object):
     app = Flask(__name__)
-    app.config.from_object('flaskapp.config.DevelopmentConfig')
+    app.config.from_object(config_object)
 
     bcrypt.init_app(app)
 
@@ -26,7 +26,7 @@ def create_app():
     from flaskapp.auth import authenticate, identity
     jwt.authentication_handler(authenticate)
     jwt.identity_handler(identity)
-    jwt.init_app(app)    
+    jwt.init_app(app)
     
     # Resources must be added before api.init_app
     from flaskapp import resources

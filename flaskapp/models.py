@@ -5,7 +5,7 @@ class User(db.Model):
     __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
-    password = db.Column(db.String, nullable=False) # Do not directly set and store passwords. Use set_password() and check_password()
+    _password = db.Column(db.String, nullable=False, default='Something has gone terribly wrong') # Do not directly change the _password property. Use set_password() and check_password()
     email = db.Column(db.String, unique=True, nullable=False)
     email_is_verified = db.Column(db.Boolean, nullable=False, default=False)
     account_created_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.now())
@@ -16,11 +16,11 @@ class User(db.Model):
     role = db.Column(db.String, default='user')
 
     def set_password(self, password):
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        self._password = bcrypt.generate_password_hash(password).decode('utf-8')
         return True
  
     def check_password(self, password):
-        return bcrypt.check_password_hash(self.password, password)
+        return bcrypt.check_password_hash(self._password, password)
 
     def __repr__(self):
         return f'<User id={self.id}, username={self.username}, email={self.email}>'

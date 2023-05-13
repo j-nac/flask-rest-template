@@ -17,10 +17,12 @@ class Register(Resource):
         parser.add_argument('description')
         args = parser.parse_args()
 
-        hashed_password = bcrypt.generate_password_hash(args['password']).decode('utf-8')
-        user = User(username=args['username'], password=hashed_password, email=args['email'], profile_picture=args['profile_picture'], description=args['description'])
+        user = User(username=args['username'], email=args['email'], profile_picture=args['profile_picture'], description=args['description'])
+        user.set_password(args['password'])
         db.session.add(user)
         db.session.commit()
+
+        return {'message': f'User {user.username} has been successfully created'}
 
 api.add_resource(HelloWorld, '/')
 api.add_resource(Register, '/register')
