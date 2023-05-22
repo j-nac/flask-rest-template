@@ -1,8 +1,8 @@
-from flaskapp import db, bcrypt
 from datetime import datetime
+from flaskapp import db, bcrypt
 
 class User(db.Model):
-    __tablename__ = 'User'
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
     _password = db.Column(db.String, nullable=False, default='Something has gone terribly wrong') # Do not directly change the _password property. Use set_password() and check_password()
@@ -14,6 +14,8 @@ class User(db.Model):
     profile_picture = db.Column(db.String)
     description = db.Column(db.Text)
     role = db.Column(db.String, default='user')
+
+    # Backrefs: workspaces, projects, tasks
 
     def set_password(self, password):
         self._password = bcrypt.generate_password_hash(password).decode('utf-8')

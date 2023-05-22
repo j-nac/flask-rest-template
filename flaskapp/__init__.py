@@ -2,13 +2,13 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from flask_bcrypt import Bcrypt
-from flask_jwt import JWT
+from flask_jwt_extended import JWTManager
 
 # Set up dependencies
 db = SQLAlchemy()
 api = Api()
 bcrypt = Bcrypt()
-jwt = JWT()
+jwt = JWTManager()
 
 def create_app(config_object):
     app = Flask(__name__)
@@ -22,18 +22,17 @@ def create_app(config_object):
     with app.app_context():
         db.create_all()
     
-    # Add jwt
-    from flaskapp.auth import authenticate, identity
-    jwt.authentication_handler(authenticate)
-    jwt.identity_handler(identity)
     jwt.init_app(app)
     
     # Resources must be added before api.init_app
     from flaskapp import resources
     api.init_app(app)
     
-    # Import blueprints like below
-    # from flaskapp.app import app_blueprint
-    # app.register_blueprint(app_blueprint, url_prefix='/app')
+    # Import blueprints
+    from flaskapp.hello import hello_bp
+    from flaskapp.user import user_bp
+
+    app.register_blueprint(hello_bp, url_prefix='')
+    app.register_blueprint(user_bp, url_prefix='/user')
 
     return app
