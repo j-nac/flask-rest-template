@@ -24,10 +24,6 @@ def create_app(config_object):
     
     jwt.init_app(app)
     
-    # Resources must be added before api.init_app
-    from flaskapp import resources
-    api.init_app(app)
-    
     # Import blueprints
     from flaskapp.hello import hello_bp
     from flaskapp.user import user_bp
