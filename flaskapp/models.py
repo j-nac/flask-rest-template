@@ -15,8 +15,6 @@ class User(db.Model):
     description = db.Column(db.Text)
     role = db.Column(db.String, default='user')
 
-    # Backrefs: workspaces, projects, tasks
-
     def set_password(self, password):
         self._password = bcrypt.generate_password_hash(password).decode('utf-8')
         return True
